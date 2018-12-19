@@ -5,7 +5,9 @@ using System.Linq;
 using System.Net;
 using System.Net.Sockets;
 using System.Text;
-using System.Threading.Tasks;
+using System.Threading;
+using System.IO;
+using System.Drawing;
 
 namespace ExampleWebServer
 {
@@ -20,8 +22,7 @@ namespace ExampleWebServer
                 SqlConnection cnn = new SqlConnection(connetionString);
                 try
                 {
-                    cnn.Open();                    
-                    cnn.Close();
+                    cnn.Open(); 
                 }
                 catch (Exception ex)
                 {
@@ -33,39 +34,12 @@ namespace ExampleWebServer
                 server = new TcpListener(localAddr, port);
                 server.Start();
 
-                Byte[] bytes = new Byte[256];
-                String data = null;
-
                 while (true)
                 {
-                    Console.Write("Waiting for a connection... ");
+                    Console.WriteLine("Waiting for a connection... ");
                     TcpClient client = server.AcceptTcpClient();
-                    Console.WriteLine("Connected");
-
-                    data = null;
-                    NetworkStream stream = client.GetStream();
-
-                    int i;
-                    while ((i = stream.Read(bytes, 0, bytes.Length)) != 0)
-                    {
-                        data = System.Text.Encoding.ASCII.GetString(bytes, 0, i);
-                        Console.Write("{0}", data);
-                    }
-
-                    String body = @"<html><body>Hello world</body></html>";
-                    String response =
-@"HTTP/1.1 200 OK
-Server: Example
-Accept-Ranges: bytes
-Content-Length: " + body.Length.ToString() + @"
-Content-Type: text/html
-
-" + body;
-
-                    byte[] msg = System.Text.Encoding.ASCII.GetBytes(response);
-                    stream.Write(msg, 0, msg.Length);
-                    Console.WriteLine("Sent: {0}", response);
-                    client.Close();
+                    Thread t = new Thread(() => processClient(client, cnn));
+                    t.Start();
                 }
             }
             catch (SocketException e)
@@ -79,6 +53,71 @@ Content-Type: text/html
 
             Console.WriteLine("\nHit enter to continue...");
             Console.Read();
+        }
+
+        static void processClient(TcpClient tcpClient, SqlConnection cxn)
+        {
+            Console.WriteLine("Connected");
+            Byte[] bytes = new Byte[256];
+            String data = null;
+            NetworkStream stream = tcpClient.GetStream();
+            String log = "";
+            int i;
+            while (tcpClient.Connected & (i = stream.Read(bytes, 0, bytes.Length)) != 0)
+            {
+                data = System.Text.Encoding.ASCII.GetString(bytes, 0, i);
+                Console.WriteLine("{0}", data);
+                log += data;
+                if (i < 256)
+                {
+                    String assetLink = @"..\..\assets\index.htm";
+                    //String assetLink = @"..\..\assets\earth2.jpg";
+                    String assetType = contentType(assetLink);
+                    byte[] body = File.ReadAllBytes(assetLink);
+                    String bodyStr = System.Text.Encoding.ASCII.GetString(body, 0, body.Length);
+                    String response =
+                    @"HTTP/1.1 200 OK
+                        Server: Example
+                        Accept-Ranges: bytes
+                        Content-Length: " + body.Length.ToString() + @"
+                        Content-Type: " + assetType + @"
+
+                    " + (contentType(assetLink) == "text/html" ? bodyStr : "");
+                    
+                    FileStream f = new FileStream(assetLink, FileMode.Open);
+
+                    byte[] msg = System.Text.Encoding.ASCII.GetBytes(response);
+                    stream.Write(msg, 0, msg.Length);
+                    if (assetType != "text/html") f.CopyTo(stream);
+
+                    String query = "INSERT INTO Example.dbo.RequestLog (Request) VALUES ('" + log + "');";
+                    SqlCommand command = new SqlCommand(query, cxn);
+                    command.ExecuteNonQuery();
+
+                    Console.WriteLine("Sent: {0}", response);
+                    tcpClient.Close();
+                    f.Close();
+                    break;
+                }
+            }
+            tcpClient.Close();
+        }
+
+        static String contentType(String type)
+        {
+            if (type.EndsWith("htm"))
+            {
+                return "text/html";
+            }
+            else if (type.EndsWith("pdf"))
+            {
+                return "application/pdf";
+            }
+            else if (type.EndsWith("jpg")) {
+                return "image/jpeg";
+            }
+
+            return "";
         }
     }
 }
