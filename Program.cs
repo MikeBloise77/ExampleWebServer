@@ -22,8 +22,7 @@ namespace ExampleWebServer
                 SqlConnection cnn = new SqlConnection(connetionString);
                 try
                 {
-                    cnn.Open();                    
-                    cnn.Close();
+                    cnn.Open(); 
                 }
                 catch (Exception ex)
                 {
@@ -39,7 +38,7 @@ namespace ExampleWebServer
                 {
                     Console.WriteLine("Waiting for a connection... ");
                     TcpClient client = server.AcceptTcpClient();
-                    Thread t = new Thread(() => processClient(client));
+                    Thread t = new Thread(() => processClient(client, cnn));
                     t.Start();
                 }
             }
@@ -56,19 +55,19 @@ namespace ExampleWebServer
             Console.Read();
         }
 
-        static void processClient(TcpClient tcpClient)
+        static void processClient(TcpClient tcpClient, SqlConnection cxn)
         {
             Console.WriteLine("Connected");
             Byte[] bytes = new Byte[256];
             String data = null;
             NetworkStream stream = tcpClient.GetStream();
-            
+            String log = "";
             int i;
             while (tcpClient.Connected & (i = stream.Read(bytes, 0, bytes.Length)) != 0)
             {
                 data = System.Text.Encoding.ASCII.GetString(bytes, 0, i);
                 Console.WriteLine("{0}", data);
-
+                log += data;
                 if (i < 256)
                 {
                     String assetLink = @"..\..\assets\index.htm";
@@ -86,25 +85,21 @@ namespace ExampleWebServer
                     " + (contentType(assetLink) == "text/html" ? bodyStr : "");
                     
                     FileStream f = new FileStream(assetLink, FileMode.Open);
-                    StreamReader s = new StreamReader(f);
-                    String buff = s.ReadToEnd();
-                    s.Close();
 
                     byte[] msg = System.Text.Encoding.ASCII.GetBytes(response);
-                    byte[] b = System.Text.Encoding.ASCII.GetBytes(buff);
                     stream.Write(msg, 0, msg.Length);
+                    if (assetType != "text/html") f.CopyTo(stream);
 
-                    if (assetType != "text/html")
-                    {
-                        stream.Write(b, 0, b.Length);
-                    }
+                    String query = "INSERT INTO Example.dbo.RequestLog (Request) VALUES ('" + log + "');";
+                    SqlCommand command = new SqlCommand(query, cxn);
+                    command.ExecuteNonQuery();
+
                     Console.WriteLine("Sent: {0}", response);
                     tcpClient.Close();
                     f.Close();
                     break;
                 }
             }
-
             tcpClient.Close();
         }
 
