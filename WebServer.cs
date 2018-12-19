@@ -56,6 +56,7 @@ namespace ExampleWebServer
                 catch (Exception ex)
                 {
                     Console.WriteLine(ex.Message);
+                    _listener.Stop();
                 }
             }
         }
