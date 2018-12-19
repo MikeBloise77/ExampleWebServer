@@ -13,72 +13,75 @@ namespace ExampleWebServer
     {
         static void Main(string[] args)
         {
-            TcpListener server = null;
-            try
-            {
-                string connetionString = "Data Source=54.213.195.209;Initial Catalog=Example;User ID=example;Password=example";
-                SqlConnection cnn = new SqlConnection(connetionString);
-                try
-                {
-                    cnn.Open();                    
-                    cnn.Close();
-                }
-                catch (Exception ex)
-                {
-                    Console.WriteLine("Can not open data connection");
-                }
+            var rootDirectory = @"C:\Users\Jignesh Gangajaliya\Source\Repos\MikeBloise77\ExampleWebServer";
+            var WwbServer = new WebServer(rootDirectory, 8081);
 
-                Int32 port = 8081;
-                IPAddress localAddr = IPAddress.Parse("127.0.0.1");
-                server = new TcpListener(localAddr, port);
-                server.Start();
+            //            TcpListener server = null;
+            //            try
+            //            {
+            //                string connetionString = "Data Source=54.213.195.209;Initial Catalog=Example;User ID=example;Password=example";
+            //                SqlConnection cnn = new SqlConnection(connetionString);
+            //                try
+            //                {
+            //                    cnn.Open();                    
+            //                    cnn.Close();
+            //                }
+            //                catch (Exception ex)
+            //                {
+            //                    Console.WriteLine("Can not open data connection");
+            //                }
 
-                Byte[] bytes = new Byte[256];
-                String data = null;
+            //                Int32 port = 8081;
+            //                IPAddress localAddr = IPAddress.Parse("127.0.0.1");
+            //                server = new TcpListener(localAddr, port);
+            //                server.Start();
 
-                while (true)
-                {
-                    Console.Write("Waiting for a connection... ");
-                    TcpClient client = server.AcceptTcpClient();
-                    Console.WriteLine("Connected");
+            //                Byte[] bytes = new Byte[256];
+            //                String data = null;
 
-                    data = null;
-                    NetworkStream stream = client.GetStream();
+            //                while (true)
+            //                {
+            //                    Console.Write("Waiting for a connection... ");
+            //                    TcpClient client = server.AcceptTcpClient();
+            //                    Console.WriteLine("Connected");
 
-                    int i;
-                    while ((i = stream.Read(bytes, 0, bytes.Length)) != 0)
-                    {
-                        data = System.Text.Encoding.ASCII.GetString(bytes, 0, i);
-                        Console.Write("{0}", data);
-                    }
+            //                    data = null;
+            //                    NetworkStream stream = client.GetStream();
 
-                    String body = @"<html><body>Hello world</body></html>";
-                    String response =
-@"HTTP/1.1 200 OK
-Server: Example
-Accept-Ranges: bytes
-Content-Length: " + body.Length.ToString() + @"
-Content-Type: text/html
+            //                    int i;
+            //                    while ((i = stream.Read(bytes, 0, bytes.Length)) != 0)
+            //                    {
+            //                        data = System.Text.Encoding.ASCII.GetString(bytes, 0, i);
+            //                        Console.Write("{0}", data);
+            //                    }
 
-" + body;
+            //                    String body = @"<html><body>Hello world</body></html>";
+            //                    String response =
+            //@"HTTP/1.1 200 OK
+            //Server: Example
+            //Accept-Ranges: bytes
+            //Content-Length: " + body.Length.ToString() + @"
+            //Content-Type: text/html
 
-                    byte[] msg = System.Text.Encoding.ASCII.GetBytes(response);
-                    stream.Write(msg, 0, msg.Length);
-                    Console.WriteLine("Sent: {0}", response);
-                    client.Close();
-                }
-            }
-            catch (SocketException e)
-            {
-                Console.WriteLine("SocketException: {0}", e);
-            }
-            finally
-            {                 
-                server.Stop();
-            }
+            //" + body;
 
-            Console.WriteLine("\nHit enter to continue...");
-            Console.Read();
+            //                    byte[] msg = System.Text.Encoding.ASCII.GetBytes(response);
+            //                    stream.Write(msg, 0, msg.Length);
+            //                    Console.WriteLine("Sent: {0}", response);
+            //                    client.Close();
+            //                }
+            //            }
+            //            catch (SocketException e)
+            //            {
+            //                Console.WriteLine("SocketException: {0}", e);
+            //            }
+            //            finally
+            //            {                 
+            //                server.Stop();
+            //            }
+
+            //            Console.WriteLine("\nHit enter to continue...");
+            //            Console.Read();
         }
     }
 }
