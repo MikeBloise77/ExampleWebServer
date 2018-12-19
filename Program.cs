@@ -29,7 +29,7 @@ namespace ExampleWebServer
                 catch (Exception ex)
                 {
                     Console.WriteLine("Can not open data connection");
-                }
+               }
 
                 //127.0.0.1:8081
                 Int32 port = 8081;
@@ -63,7 +63,7 @@ namespace ExampleWebServer
                     {
                         Console.WriteLine(ex.ToString());
                     }
-                    stream.Close();
+                    
 
                     String body = @"<html><body>Hello world</body></html>";
                     String response =
@@ -76,7 +76,8 @@ namespace ExampleWebServer
                         " + body;
 
                     byte[] msg = System.Text.Encoding.ASCII.GetBytes(response);
-                    //stream.Write(msg, 0, msg.Length);
+                    stream.Write(msg, 0, msg.Length);
+                    stream.Close();
                     Console.WriteLine("Sent: {0}", response);
                     client.Close();
                 }
