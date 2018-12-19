@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Data.SqlClient;
 using System.Linq;
@@ -14,20 +14,24 @@ namespace ExampleWebServer
         static void Main(string[] args)
         {
             TcpListener server = null;
+            string connetionString = "Data Source=54.213.195.209;Initial Catalog=Example;User ID=example;Password=example";
+            SqlConnection cnn = new SqlConnection(connetionString);
+
             try
             {
-                string connetionString = "Data Source=54.213.195.209;Initial Catalog=Example;User ID=example;Password=example";
-                SqlConnection cnn = new SqlConnection(connetionString);
+                //string connetionString = "Data Source=54.213.195.209;Initial Catalog=Example;User ID=example;Password=example";
+                //SqlConnection cnn = new SqlConnection(connetionString);
                 try
                 {
                     cnn.Open();                    
-                    cnn.Close();
+                    //cnn.Close();
                 }
                 catch (Exception ex)
                 {
                     Console.WriteLine("Can not open data connection");
-                }
+               }
 
+                //127.0.0.1:8081
                 Int32 port = 8081;
                 IPAddress localAddr = IPAddress.Parse("127.0.0.1");
                 server = new TcpListener(localAddr, port);
@@ -46,24 +50,34 @@ namespace ExampleWebServer
                     NetworkStream stream = client.GetStream();
 
                     int i;
-                    while ((i = stream.Read(bytes, 0, bytes.Length)) != 0)
+                    try {
+                        
+                        while (stream.DataAvailable)
+                        {
+                            i = stream.Read(bytes, 0, bytes.Length);
+                            data = System.Text.Encoding.ASCII.GetString(bytes, 0, i);
+                            Console.Write("{0}", data);
+                            
+                        }
+                    }catch(Exception ex)
                     {
-                        data = System.Text.Encoding.ASCII.GetString(bytes, 0, i);
-                        Console.Write("{0}", data);
+                        Console.WriteLine(ex.ToString());
                     }
+                    
 
                     String body = @"<html><body>Hello world</body></html>";
                     String response =
-@"HTTP/1.1 200 OK
-Server: Example
-Accept-Ranges: bytes
-Content-Length: " + body.Length.ToString() + @"
-Content-Type: text/html
+                        @"HTTP/1.1 200 OK
+                        Server: Example
+                        Accept-Ranges: bytes
+                        Content-Length: " + body.Length.ToString() + @"
+                        Content-Type: text/html
 
-" + body;
+                        " + body;
 
                     byte[] msg = System.Text.Encoding.ASCII.GetBytes(response);
                     stream.Write(msg, 0, msg.Length);
+                    stream.Close();
                     Console.WriteLine("Sent: {0}", response);
                     client.Close();
                 }
@@ -75,6 +89,7 @@ Content-Type: text/html
             finally
             {                 
                 server.Stop();
+                cnn.Close();
             }
 
             Console.WriteLine("\nHit enter to continue...");
