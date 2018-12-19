@@ -1,0 +1,415 @@
+﻿<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">x86</Platform>
+    <ProjectGuid>{65744222-F422-4336-B2A5-D0906D2E29E3}</ProjectGuid>
+    <OutputType>Exe</OutputType>
+    <NoStandardLibraries>false</NoStandardLibraries>
+    <AssemblyName>ConsoleApplication</AssemblyName>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <TargetFrameworkProfile>Client</TargetFrameworkProfile>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|x86' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <PlatformTarget>x86</PlatformTarget>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|x86' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <PlatformTarget>x86</PlatformTarget>
+  </PropertyGroup>
+  <PropertyGroup>
+    <RootNamespace>Example</RootNamespace>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="System.Xml" />
+    <Reference Include="System.Xml.Linq" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include=".gitignore" />
+    <Content Include="api routes\routes.js" />
+    <Content Include="html\index.html" />
+    <Content Include="node_modules\accepts\index.js" />
+    <Content Include="node_modules\array-flatten\array-flatten.js" />
+    <Content Include="node_modules\body-parser\index.js" />
+    <Content Include="node_modules\body-parser\lib\read.js" />
+    <Content Include="node_modules\body-parser\lib\types\json.js" />
+    <Content Include="node_modules\body-parser\lib\types\raw.js" />
+    <Content Include="node_modules\body-parser\lib\types\text.js" />
+    <Content Include="node_modules\body-parser\lib\types\urlencoded.js" />
+    <Content Include="node_modules\bytes\index.js" />
+    <Content Include="node_modules\content-disposition\index.js" />
+    <Content Include="node_modules\content-type\index.js" />
+    <Content Include="node_modules\cookie-signature\index.js" />
+    <Content Include="node_modules\cookie\index.js" />
+    <Content Include="node_modules\debug\karma.conf.js" />
+    <Content Include="node_modules\debug\node.js" />
+    <Content Include="node_modules\debug\src\browser.js" />
+    <Content Include="node_modules\debug\src\debug.js" />
+    <Content Include="node_modules\debug\src\index.js" />
+    <Content Include="node_modules\debug\src\inspector-log.js" />
+    <Content Include="node_modules\debug\src\node.js" />
+    <Content Include="node_modules\depd\index.js" />
+    <Content Include="node_modules\depd\lib\browser\index.js" />
+    <Content Include="node_modules\depd\lib\compat\callsite-tostring.js" />
+    <Content Include="node_modules\depd\lib\compat\event-listener-count.js" />
+    <Content Include="node_modules\depd\lib\compat\index.js" />
+    <Content Include="node_modules\destroy\index.js" />
+    <Content Include="node_modules\ee-first\index.js" />
+    <Content Include="node_modules\encodeurl\index.js" />
+    <Content Include="node_modules\escape-html\index.js" />
+    <Content Include="node_modules\etag\index.js" />
+    <Content Include="node_modules\express\index.js" />
+    <Content Include="node_modules\express\lib\application.js" />
+    <Content Include="node_modules\express\lib\express.js" />
+    <Content Include="node_modules\express\lib\middleware\init.js" />
+    <Content Include="node_modules\express\lib\middleware\query.js" />
+    <Content Include="node_modules\express\lib\request.js" />
+    <Content Include="node_modules\express\lib\response.js" />
+    <Content Include="node_modules\express\lib\router\index.js" />
+    <Content Include="node_modules\express\lib\router\layer.js" />
+    <Content Include="node_modules\express\lib\router\route.js" />
+    <Content Include="node_modules\express\lib\utils.js" />
+    <Content Include="node_modules\express\lib\view.js" />
+    <Content Include="node_modules\finalhandler\index.js" />
+    <Content Include="node_modules\forwarded\index.js" />
+    <Content Include="node_modules\fresh\index.js" />
+    <Content Include="node_modules\http-errors\index.js" />
+    <Content Include="node_modules\iconv-lite\encodings\dbcs-codec.js" />
+    <Content Include="node_modules\iconv-lite\encodings\dbcs-data.js" />
+    <Content Include="node_modules\iconv-lite\encodings\index.js" />
+    <Content Include="node_modules\iconv-lite\encodings\internal.js" />
+    <Content Include="node_modules\iconv-lite\encodings\sbcs-codec.js" />
+    <Content Include="node_modules\iconv-lite\encodings\sbcs-data-generated.js" />
+    <Content Include="node_modules\iconv-lite\encodings\sbcs-data.js" />
+    <Content Include="node_modules\iconv-lite\encodings\utf16.js" />
+    <Content Include="node_modules\iconv-lite\encodings\utf7.js" />
+    <Content Include="node_modules\iconv-lite\lib\bom-handling.js" />
+    <Content Include="node_modules\iconv-lite\lib\extend-node.js" />
+    <Content Include="node_modules\iconv-lite\lib\index.js" />
+    <Content Include="node_modules\iconv-lite\lib\streams.js" />
+    <Content Include="node_modules\inherits\inherits.js" />
+    <Content Include="node_modules\inherits\inherits_browser.js" />
+    <Content Include="node_modules\ipaddr.js\ipaddr.min.js" />
+    <Content Include="node_modules\ipaddr.js\lib\ipaddr.js" />
+    <Content Include="node_modules\media-typer\index.js" />
+    <Content Include="node_modules\merge-descriptors\index.js" />
+    <Content Include="node_modules\methods\index.js" />
+    <Content Include="node_modules\mime-db\index.js" />
+    <Content Include="node_modules\mime-types\index.js" />
+    <Content Include="node_modules\mime\build\build.js" />
+    <Content Include="node_modules\mime\build\test.js" />
+    <Content Include="node_modules\mime\cli.js" />
+    <Content Include="node_modules\mime\mime.js" />
+    <Content Include="node_modules\ms\index.js" />
+    <Content Include="node_modules\negotiator\index.js" />
+    <Content Include="node_modules\negotiator\lib\charset.js" />
+    <Content Include="node_modules\negotiator\lib\encoding.js" />
+    <Content Include="node_modules\negotiator\lib\language.js" />
+    <Content Include="node_modules\negotiator\lib\mediaType.js" />
+    <Content Include="node_modules\on-finished\index.js" />
+    <Content Include="node_modules\parseurl\index.js" />
+    <Content Include="node_modules\path-to-regexp\index.js" />
+    <Content Include="node_modules\proxy-addr\index.js" />
+    <Content Include="node_modules\qs\dist\qs.js" />
+    <Content Include="node_modules\qs\lib\formats.js" />
+    <Content Include="node_modules\qs\lib\index.js" />
+    <Content Include="node_modules\qs\lib\parse.js" />
+    <Content Include="node_modules\qs\lib\stringify.js" />
+    <Content Include="node_modules\qs\lib\utils.js" />
+    <Content Include="node_modules\qs\test\index.js" />
+    <Content Include="node_modules\qs\test\parse.js" />
+    <Content Include="node_modules\qs\test\stringify.js" />
+    <Content Include="node_modules\qs\test\utils.js" />
+    <Content Include="node_modules\range-parser\index.js" />
+    <Content Include="node_modules\raw-body\index.js" />
+    <Content Include="node_modules\safe-buffer\index.js" />
+    <Content Include="node_modules\safer-buffer\dangerous.js" />
+    <Content Include="node_modules\safer-buffer\safer.js" />
+    <Content Include="node_modules\safer-buffer\tests.js" />
+    <Content Include="node_modules\send\index.js" />
+    <Content Include="node_modules\serve-static\index.js" />
+    <Content Include="node_modules\setprototypeof\index.js" />
+    <Content Include="node_modules\statuses\index.js" />
+    <Content Include="node_modules\type-is\index.js" />
+    <Content Include="node_modules\unpipe\index.js" />
+    <Content Include="node_modules\utils-merge\index.js" />
+    <Content Include="node_modules\vary\index.js" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include=".git\config" />
+    <None Include=".git\description" />
+    <None Include=".git\HEAD" />
+    <None Include=".git\hooks\applypatch-msg.sample" />
+    <None Include=".git\hooks\commit-msg.sample" />
+    <None Include=".git\hooks\fsmonitor-watchman.sample" />
+    <None Include=".git\hooks\post-update.sample" />
+    <None Include=".git\hooks\pre-applypatch.sample" />
+    <None Include=".git\hooks\pre-commit.sample" />
+    <None Include=".git\hooks\pre-push.sample" />
+    <None Include=".git\hooks\pre-rebase.sample" />
+    <None Include=".git\hooks\pre-receive.sample" />
+    <None Include=".git\hooks\prepare-commit-msg.sample" />
+    <None Include=".git\hooks\update.sample" />
+    <None Include=".git\index" />
+    <None Include=".git\info\exclude" />
+    <None Include=".git\logs\HEAD" />
+    <None Include=".git\logs\refs\heads\master" />
+    <None Include=".git\logs\refs\remotes\origin\HEAD" />
+    <None Include=".git\objects\13\47994a942b1361dc24aec56adc100ebe16549c" />
+    <None Include=".git\objects\34\8a9563fb88870cd3b5400cf7be4fca62af2dc8" />
+    <None Include=".git\objects\43\94bbb963de74da9d54e02bab9d72d1056dbd21" />
+    <None Include=".git\objects\4e\65fa83acf42facea5075de8a193634ab847e8a" />
+    <None Include=".git\objects\87\9bbc64e86d500e0e08102f33665c0e3a797d7f" />
+    <None Include=".git\objects\88\fa4027bda397de6bf19f0940e5dd6026c877f9" />
+    <None Include=".git\objects\d7\da926d3f13f03ced8748aeeeeb7b621c505ef1" />
+    <None Include=".git\objects\e8\b18c8fd26df1762c1ad7db6e968fc788faa0d4" />
+    <None Include=".git\objects\fb\a9ea4bd1566397fb3f43b225d80af5703f847a" />
+    <None Include=".git\packed-refs" />
+    <None Include=".git\refs\heads\master" />
+    <None Include=".git\refs\remotes\origin\HEAD" />
+    <None Include="App.config" />
+    <None Include="node_modules\.bin\mime" />
+    <None Include="node_modules\.bin\mime.cmd" />
+    <None Include="node_modules\accepts\HISTORY.md" />
+    <None Include="node_modules\accepts\LICENSE" />
+    <None Include="node_modules\accepts\package.json" />
+    <None Include="node_modules\accepts\README.md" />
+    <None Include="node_modules\array-flatten\LICENSE" />
+    <None Include="node_modules\array-flatten\package.json" />
+    <None Include="node_modules\array-flatten\README.md" />
+    <None Include="node_modules\body-parser\HISTORY.md" />
+    <None Include="node_modules\body-parser\LICENSE" />
+    <None Include="node_modules\body-parser\package.json" />
+    <None Include="node_modules\body-parser\README.md" />
+    <None Include="node_modules\bytes\History.md" />
+    <None Include="node_modules\bytes\LICENSE" />
+    <None Include="node_modules\bytes\package.json" />
+    <None Include="node_modules\bytes\Readme.md" />
+    <None Include="node_modules\content-disposition\HISTORY.md" />
+    <None Include="node_modules\content-disposition\LICENSE" />
+    <None Include="node_modules\content-disposition\package.json" />
+    <None Include="node_modules\content-disposition\README.md" />
+    <None Include="node_modules\content-type\HISTORY.md" />
+    <None Include="node_modules\content-type\LICENSE" />
+    <None Include="node_modules\content-type\package.json" />
+    <None Include="node_modules\content-type\README.md" />
+    <None Include="node_modules\cookie-signature\.npmignore" />
+    <None Include="node_modules\cookie-signature\History.md" />
+    <None Include="node_modules\cookie-signature\package.json" />
+    <None Include="node_modules\cookie-signature\Readme.md" />
+    <None Include="node_modules\cookie\HISTORY.md" />
+    <None Include="node_modules\cookie\LICENSE" />
+    <None Include="node_modules\cookie\package.json" />
+    <None Include="node_modules\cookie\README.md" />
+    <None Include="node_modules\debug\.coveralls.yml" />
+    <None Include="node_modules\debug\.eslintrc" />
+    <None Include="node_modules\debug\.npmignore" />
+    <None Include="node_modules\debug\.travis.yml" />
+    <None Include="node_modules\debug\CHANGELOG.md" />
+    <None Include="node_modules\debug\component.json" />
+    <None Include="node_modules\debug\LICENSE" />
+    <None Include="node_modules\debug\Makefile" />
+    <None Include="node_modules\debug\package.json" />
+    <None Include="node_modules\debug\README.md" />
+    <None Include="node_modules\depd\History.md" />
+    <None Include="node_modules\depd\LICENSE" />
+    <None Include="node_modules\depd\package.json" />
+    <None Include="node_modules\depd\Readme.md" />
+    <None Include="node_modules\destroy\LICENSE" />
+    <None Include="node_modules\destroy\package.json" />
+    <None Include="node_modules\destroy\README.md" />
+    <None Include="node_modules\ee-first\LICENSE" />
+    <None Include="node_modules\ee-first\package.json" />
+    <None Include="node_modules\ee-first\README.md" />
+    <None Include="node_modules\encodeurl\HISTORY.md" />
+    <None Include="node_modules\encodeurl\LICENSE" />
+    <None Include="node_modules\encodeurl\package.json" />
+    <None Include="node_modules\encodeurl\README.md" />
+    <None Include="node_modules\escape-html\LICENSE" />
+    <None Include="node_modules\escape-html\package.json" />
+    <None Include="node_modules\escape-html\Readme.md" />
+    <None Include="node_modules\etag\HISTORY.md" />
+    <None Include="node_modules\etag\LICENSE" />
+    <None Include="node_modules\etag\package.json" />
+    <None Include="node_modules\etag\README.md" />
+    <None Include="node_modules\express\History.md" />
+    <None Include="node_modules\express\LICENSE" />
+    <None Include="node_modules\express\package.json" />
+    <None Include="node_modules\express\Readme.md" />
+    <None Include="node_modules\finalhandler\HISTORY.md" />
+    <None Include="node_modules\finalhandler\LICENSE" />
+    <None Include="node_modules\finalhandler\package.json" />
+    <None Include="node_modules\finalhandler\README.md" />
+    <None Include="node_modules\forwarded\HISTORY.md" />
+    <None Include="node_modules\forwarded\LICENSE" />
+    <None Include="node_modules\forwarded\package.json" />
+    <None Include="node_modules\forwarded\README.md" />
+    <None Include="node_modules\fresh\HISTORY.md" />
+    <None Include="node_modules\fresh\LICENSE" />
+    <None Include="node_modules\fresh\package.json" />
+    <None Include="node_modules\fresh\README.md" />
+    <None Include="node_modules\http-errors\HISTORY.md" />
+    <None Include="node_modules\http-errors\LICENSE" />
+    <None Include="node_modules\http-errors\package.json" />
+    <None Include="node_modules\http-errors\README.md" />
+    <None Include="node_modules\iconv-lite\.travis.yml" />
+    <None Include="node_modules\iconv-lite\Changelog.md" />
+    <None Include="node_modules\iconv-lite\encodings\tables\big5-added.json" />
+    <None Include="node_modules\iconv-lite\encodings\tables\cp936.json" />
+    <None Include="node_modules\iconv-lite\encodings\tables\cp949.json" />
+    <None Include="node_modules\iconv-lite\encodings\tables\cp950.json" />
+    <None Include="node_modules\iconv-lite\encodings\tables\eucjp.json" />
+    <None Include="node_modules\iconv-lite\encodings\tables\gb18030-ranges.json" />
+    <None Include="node_modules\iconv-lite\encodings\tables\gbk-added.json" />
+    <None Include="node_modules\iconv-lite\encodings\tables\shiftjis.json" />
+    <None Include="node_modules\iconv-lite\LICENSE" />
+    <None Include="node_modules\iconv-lite\package.json" />
+    <None Include="node_modules\iconv-lite\README.md" />
+    <None Include="node_modules\inherits\LICENSE" />
+    <None Include="node_modules\inherits\package.json" />
+    <None Include="node_modules\inherits\README.md" />
+    <None Include="node_modules\ipaddr.js\package.json" />
+    <None Include="node_modules\ipaddr.js\README.md" />
+    <None Include="node_modules\media-typer\HISTORY.md" />
+    <None Include="node_modules\media-typer\LICENSE" />
+    <None Include="node_modules\media-typer\package.json" />
+    <None Include="node_modules\media-typer\README.md" />
+    <None Include="node_modules\merge-descriptors\HISTORY.md" />
+    <None Include="node_modules\merge-descriptors\LICENSE" />
+    <None Include="node_modules\merge-descriptors\package.json" />
+    <None Include="node_modules\merge-descriptors\README.md" />
+    <None Include="node_modules\methods\HISTORY.md" />
+    <None Include="node_modules\methods\LICENSE" />
+    <None Include="node_modules\methods\package.json" />
+    <None Include="node_modules\methods\README.md" />
+    <None Include="node_modules\mime-db\db.json" />
+    <None Include="node_modules\mime-db\HISTORY.md" />
+    <None Include="node_modules\mime-db\LICENSE" />
+    <None Include="node_modules\mime-db\package.json" />
+    <None Include="node_modules\mime-db\README.md" />
+    <None Include="node_modules\mime-types\HISTORY.md" />
+    <None Include="node_modules\mime-types\LICENSE" />
+    <None Include="node_modules\mime-types\package.json" />
+    <None Include="node_modules\mime-types\README.md" />
+    <None Include="node_modules\mime\LICENSE" />
+    <None Include="node_modules\mime\package.json" />
+    <None Include="node_modules\mime\README.md" />
+    <None Include="node_modules\mime\types.json" />
+    <None Include="node_modules\ms\license.md" />
+    <None Include="node_modules\ms\package.json" />
+    <None Include="node_modules\ms\readme.md" />
+    <None Include="node_modules\negotiator\HISTORY.md" />
+    <None Include="node_modules\negotiator\LICENSE" />
+    <None Include="node_modules\negotiator\package.json" />
+    <None Include="node_modules\negotiator\README.md" />
+    <None Include="node_modules\on-finished\HISTORY.md" />
+    <None Include="node_modules\on-finished\LICENSE" />
+    <None Include="node_modules\on-finished\package.json" />
+    <None Include="node_modules\on-finished\README.md" />
+    <None Include="node_modules\parseurl\HISTORY.md" />
+    <None Include="node_modules\parseurl\LICENSE" />
+    <None Include="node_modules\parseurl\package.json" />
+    <None Include="node_modules\parseurl\README.md" />
+    <None Include="node_modules\path-to-regexp\History.md" />
+    <None Include="node_modules\path-to-regexp\LICENSE" />
+    <None Include="node_modules\path-to-regexp\package.json" />
+    <None Include="node_modules\path-to-regexp\Readme.md" />
+    <None Include="node_modules\proxy-addr\HISTORY.md" />
+    <None Include="node_modules\proxy-addr\LICENSE" />
+    <None Include="node_modules\proxy-addr\package.json" />
+    <None Include="node_modules\proxy-addr\README.md" />
+    <None Include="node_modules\qs\.editorconfig" />
+    <None Include="node_modules\qs\.eslintignore" />
+    <None Include="node_modules\qs\.eslintrc" />
+    <None Include="node_modules\qs\CHANGELOG.md" />
+    <None Include="node_modules\qs\LICENSE" />
+    <None Include="node_modules\qs\package.json" />
+    <None Include="node_modules\qs\README.md" />
+    <None Include="node_modules\qs\test\.eslintrc" />
+    <None Include="node_modules\range-parser\HISTORY.md" />
+    <None Include="node_modules\range-parser\LICENSE" />
+    <None Include="node_modules\range-parser\package.json" />
+    <None Include="node_modules\range-parser\README.md" />
+    <None Include="node_modules\raw-body\HISTORY.md" />
+    <None Include="node_modules\raw-body\LICENSE" />
+    <None Include="node_modules\raw-body\package.json" />
+    <None Include="node_modules\raw-body\README.md" />
+    <None Include="node_modules\safe-buffer\LICENSE" />
+    <None Include="node_modules\safe-buffer\package.json" />
+    <None Include="node_modules\safe-buffer\README.md" />
+    <None Include="node_modules\safer-buffer\LICENSE" />
+    <None Include="node_modules\safer-buffer\package.json" />
+    <None Include="node_modules\safer-buffer\Porting-Buffer.md" />
+    <None Include="node_modules\safer-buffer\Readme.md" />
+    <None Include="node_modules\send\HISTORY.md" />
+    <None Include="node_modules\send\LICENSE" />
+    <None Include="node_modules\send\package.json" />
+    <None Include="node_modules\send\README.md" />
+    <None Include="node_modules\serve-static\HISTORY.md" />
+    <None Include="node_modules\serve-static\LICENSE" />
+    <None Include="node_modules\serve-static\package.json" />
+    <None Include="node_modules\serve-static\README.md" />
+    <None Include="node_modules\setprototypeof\LICENSE" />
+    <None Include="node_modules\setprototypeof\package.json" />
+    <None Include="node_modules\setprototypeof\README.md" />
+    <None Include="node_modules\statuses\codes.json" />
+    <None Include="node_modules\statuses\HISTORY.md" />
+    <None Include="node_modules\statuses\LICENSE" />
+    <None Include="node_modules\statuses\package.json" />
+    <None Include="node_modules\statuses\README.md" />
+    <None Include="node_modules\type-is\HISTORY.md" />
+    <None Include="node_modules\type-is\LICENSE" />
+    <None Include="node_modules\type-is\package.json" />
+    <None Include="node_modules\type-is\README.md" />
+    <None Include="node_modules\unpipe\HISTORY.md" />
+    <None Include="node_modules\unpipe\LICENSE" />
+    <None Include="node_modules\unpipe\package.json" />
+    <None Include="node_modules\unpipe\README.md" />
+    <None Include="node_modules\utils-merge\.npmignore" />
+    <None Include="node_modules\utils-merge\LICENSE" />
+    <None Include="node_modules\utils-merge\package.json" />
+    <None Include="node_modules\utils-merge\README.md" />
+    <None Include="node_modules\vary\HISTORY.md" />
+    <None Include="node_modules\vary\LICENSE" />
+    <None Include="node_modules\vary\package.json" />
+    <None Include="node_modules\vary\README.md" />
+    <None Include="package-lock.json" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Program.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <TypeScriptCompile Include="node_modules\iconv-lite\lib\index.d.ts" />
+    <TypeScriptCompile Include="node_modules\ipaddr.js\lib\ipaddr.js.d.ts" />
+    <TypeScriptCompile Include="node_modules\raw-body\index.d.ts" />
+    <TypeScriptCompile Include="node_modules\safe-buffer\index.d.ts" />
+    <TypeScriptCompile Include="node_modules\setprototypeof\index.d.ts" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include=".git\objects\info\" />
+    <Folder Include=".git\objects\pack\" />
+    <Folder Include=".git\refs\tags\" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSHARP.Targets" />
+  <ProjectExtensions>
+    <VisualStudio AllowExistingFolder="true" />
+  </ProjectExtensions>
+</Project>
