@@ -21,7 +21,7 @@ namespace ExampleWebServer
                 try
                 {
                     cnn.Open();                    
-                    cnn.Close();
+                   //cnn.Close();
                 }
                 catch (Exception ex)
                 {
@@ -42,7 +42,7 @@ namespace ExampleWebServer
                     TcpClient client = server.AcceptTcpClient();
                     Console.WriteLine("Connected");
 
-                    data = null;
+                    //data = null;
                     NetworkStream stream = client.GetStream();
 
                     int i;
@@ -66,6 +66,7 @@ Content-Type: text/html
                     stream.Write(msg, 0, msg.Length);
                     Console.WriteLine("Sent: {0}", response);
                     client.Close();
+                    cnn.Close();
                 }
             }
             catch (SocketException e)
