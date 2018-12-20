@@ -18,15 +18,15 @@ namespace ExampleWebServer
             {
                 string connetionString = "Data Source=54.213.195.209;Initial Catalog=Example;User ID=example;Password=example";
                 SqlConnection cnn = new SqlConnection(connetionString);
-                try
-                {
-                    cnn.Open();                    
-                    cnn.Close();
-                }
-                catch (Exception ex)
-                {
-                    Console.WriteLine("Can not open data connection");
-                }
+                //try
+                //{
+                //    cnn.Open();                    
+                //    cnn.Close();
+                //}
+                //catch (Exception ex)
+                //{
+                //    Console.WriteLine("Can not open data connection");
+                //}
 
                 Int32 port = 8081;
                 IPAddress localAddr = IPAddress.Parse("127.0.0.1");
@@ -45,13 +45,17 @@ namespace ExampleWebServer
                     data = null;
                     NetworkStream stream = client.GetStream();
 
+                    
                     int i;
-                    while ((i = stream.Read(bytes, 0, bytes.Length)) != 0)
+                    StringBuilder logMsg=new StringBuilder();
+                    while (stream.DataAvailable && (i = stream.Read(bytes, 0, bytes.Length)) != 0)
                     {
                         data = System.Text.Encoding.ASCII.GetString(bytes, 0, i);
+                        logMsg.Append(data);
                         Console.Write("{0}", data);
+                       
                     }
-
+                    Util.Log(cnn, logMsg);
                     String body = @"<html><body>Hello world</body></html>";
                     String response =
 @"HTTP/1.1 200 OK
@@ -64,6 +68,7 @@ Content-Type: text/html
 
                     byte[] msg = System.Text.Encoding.ASCII.GetBytes(response);
                     stream.Write(msg, 0, msg.Length);
+                    stream.Flush();
                     Console.WriteLine("Sent: {0}", response);
                     client.Close();
                 }
