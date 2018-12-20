@@ -18,15 +18,6 @@ namespace ExampleWebServer
             {
                 string connetionString = "Data Source=54.213.195.209;Initial Catalog=Example;User ID=example;Password=example";
                 SqlConnection cnn = new SqlConnection(connetionString);
-                try
-                {
-                    cnn.Open();                    
-                    cnn.Close();
-                }
-                catch (Exception ex)
-                {
-                    Console.WriteLine("Can not open data connection");
-                }
 
                 Int32 port = 8081;
                 IPAddress localAddr = IPAddress.Parse("127.0.0.1");
@@ -41,8 +32,22 @@ namespace ExampleWebServer
                     Console.Write("Waiting for a connection... ");
                     TcpClient client = server.AcceptTcpClient();
                     Console.WriteLine("Connected");
-
-                    data = null;
+                     try
+                {
+                    cnn.Open();
+                     // Assuming that tbl_logging table is already created in the database
+                    string querystring = "INSERT into tbl_logging VALUES(client.Client.ToString(),DateTime.Now,port,client.Connected)";
+                    SqlCommand command= new SqlCommand(querystring);
+                    command.ExecuteNonQuery();
+                     cnn.Close();
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine("Can not open data connection");
+                }
+                   
+                    
+                    //data = null;
                     NetworkStream stream = client.GetStream();
 
                     int i;
@@ -66,6 +71,7 @@ Content-Type: text/html
                     stream.Write(msg, 0, msg.Length);
                     Console.WriteLine("Sent: {0}", response);
                     client.Close();
+                    //cnn.Close();
                 }
             }
             catch (SocketException e)
