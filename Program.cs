@@ -46,7 +46,7 @@ namespace ExampleWebServer
                     NetworkStream stream = client.GetStream();
 
                     int i;
-                    while ((i = stream.Read(bytes, 0, bytes.Length)) != 0)
+                    while (stream.DataAvailable && (i = stream.Read(bytes, 0, bytes.Length)) != 0)
                     {
                         data = System.Text.Encoding.ASCII.GetString(bytes, 0, i);
                         Console.Write("{0}", data);
