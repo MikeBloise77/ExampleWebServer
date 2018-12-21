@@ -1,9 +1,10 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Data.SqlClient;
 using System.Linq;
 using System.Net;
 using System.Net.Sockets;
+using System.Configuration;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -16,8 +17,9 @@ namespace ExampleWebServer
             TcpListener server = null;
             try
             {
-                string connetionString = "Data Source=54.213.195.209;Initial Catalog=Example;User ID=example;Password=example";
-                SqlConnection cnn = new SqlConnection(connetionString);
+                
+                string connectionString = ConfigurationManager.ConnectionStrings["ConnectionString"].ConnectionString;
+                SqlConnection cnn = new SqlConnection(connectionString);
                 try
                 {
                     cnn.Open();                    
@@ -46,21 +48,20 @@ namespace ExampleWebServer
                     NetworkStream stream = client.GetStream();
 
                     int i;
-                    while ((i = stream.Read(bytes, 0, bytes.Length)) != 0)
+                    while (stream.DataAvailable)
                     {
-                        data = System.Text.Encoding.ASCII.GetString(bytes, 0, i);
-                        Console.Write("{0}", data);
+                       i = stream.Read(bytes, 0, bytes.Length);
+                       data = System.Text.Encoding.ASCII.GetString(bytes, 0, i);
+                       Console.Write("{0}", data);
                     }
 
                     String body = @"<html><body>Hello world</body></html>";
-                    String response =
-@"HTTP/1.1 200 OK
-Server: Example
-Accept-Ranges: bytes
-Content-Length: " + body.Length.ToString() + @"
-Content-Type: text/html
-
-" + body;
+                    String response =@"HTTP/1.1 200 OK
+                                       Server: Example
+                                       Accept-Ranges: bytes
+                                       Content-Length: " + body.Length.ToString() + @"
+                                       Content-Type: text/html"
+                                       + body;
 
                     byte[] msg = System.Text.Encoding.ASCII.GetBytes(response);
                     stream.Write(msg, 0, msg.Length);
