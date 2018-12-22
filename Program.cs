@@ -11,16 +11,21 @@ namespace ExampleWebServer
 {
     class Program
     {
+        public const String WEB_DIR = "/root/web/";
+        public const String VERSION = "HTTP/1.1";
+        public const String SERVERNAME = "Example";
+
+        public static string connetionString = "Data Source=54.213.195.209;Initial Catalog=Example;User ID=example;Password=example";
+
         static void Main(string[] args)
         {
             TcpListener server = null;
             try
             {
-                string connetionString = "Data Source=54.213.195.209;Initial Catalog=Example;User ID=example;Password=example";
                 SqlConnection cnn = new SqlConnection(connetionString);
                 try
                 {
-                    cnn.Open();                    
+                    cnn.Open();
                     cnn.Close();
                 }
                 catch (Exception ex)
@@ -33,7 +38,7 @@ namespace ExampleWebServer
                 server = new TcpListener(localAddr, port);
                 server.Start();
 
-                Byte[] bytes = new Byte[256];
+                Byte[] bytes = new Byte[1024];
                 String data = null;
 
                 while (true)
@@ -42,29 +47,24 @@ namespace ExampleWebServer
                     TcpClient client = server.AcceptTcpClient();
                     Console.WriteLine("Connected");
 
-                    data = null;
+                    data = "";
                     NetworkStream stream = client.GetStream();
 
                     int i;
-                    while ((i = stream.Read(bytes, 0, bytes.Length)) != 0)
+                    do
                     {
-                        data = System.Text.Encoding.ASCII.GetString(bytes, 0, i);
-                        Console.Write("{0}", data);
-                    }
+                        i = stream.Read(bytes, 0, bytes.Length);
+                        data += System.Text.Encoding.ASCII.GetString(bytes, 0, i);
+                    } while (stream.CanRead && stream.DataAvailable);
 
-                    String body = @"<html><body>Hello world</body></html>";
-                    String response =
-@"HTTP/1.1 200 OK
-Server: Example
-Accept-Ranges: bytes
-Content-Length: " + body.Length.ToString() + @"
-Content-Type: text/html
+                    if (data == "") continue;
 
-" + body;
+                    Console.Write("Recieved:\n" + data);
 
-                    byte[] msg = System.Text.Encoding.ASCII.GetBytes(response);
-                    stream.Write(msg, 0, msg.Length);
-                    Console.WriteLine("Sent: {0}", response);
+                    Request request = Request.GetRequest(data);
+                    Response response = Response.Create(request);
+                    if (response != null) response.Post(stream);
+
                     client.Close();
                 }
             }
@@ -73,12 +73,13 @@ Content-Type: text/html
                 Console.WriteLine("SocketException: {0}", e);
             }
             finally
-            {                 
+            {
                 server.Stop();
             }
 
             Console.WriteLine("\nHit enter to continue...");
             Console.Read();
         }
+
     }
 }
