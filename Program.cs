@@ -1,11 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Data.SqlClient;
+using System.IO;
 using System.Linq;
-using System.Net;
-using System.Net.Sockets;
-using System.Text;
-using System.Threading.Tasks;
+using ExampleWebServer.Handlers;
+using ExampleWebServer.Logger;
 
 namespace ExampleWebServer
 {
@@ -13,72 +11,27 @@ namespace ExampleWebServer
     {
         static void Main(string[] args)
         {
-            TcpListener server = null;
-            try
+            using (var ws = new WebServer(new FileResponseHandler(new ConsoleLogger()), GetServerRoutes().ToArray())) //todo: use IOC here
             {
-                string connetionString = "Data Source=54.213.195.209;Initial Catalog=Example;User ID=example;Password=example";
-                SqlConnection cnn = new SqlConnection(connetionString);
-                try
-                {
-                    cnn.Open();                    
-                    cnn.Close();
-                }
-                catch (Exception ex)
-                {
-                    Console.WriteLine("Can not open data connection");
-                }
+                ws.Run();
 
-                Int32 port = 8081;
-                IPAddress localAddr = IPAddress.Parse("127.0.0.1");
-                server = new TcpListener(localAddr, port);
-                server.Start();
-
-                Byte[] bytes = new Byte[256];
-                String data = null;
-
-                while (true)
-                {
-                    Console.Write("Waiting for a connection... ");
-                    TcpClient client = server.AcceptTcpClient();
-                    Console.WriteLine("Connected");
-
-                    data = null;
-                    NetworkStream stream = client.GetStream();
-
-                    int i;
-                    while ((i = stream.Read(bytes, 0, bytes.Length)) != 0)
-                    {
-                        data = System.Text.Encoding.ASCII.GetString(bytes, 0, i);
-                        Console.Write("{0}", data);
-                    }
-
-                    String body = @"<html><body>Hello world</body></html>";
-                    String response =
-@"HTTP/1.1 200 OK
-Server: Example
-Accept-Ranges: bytes
-Content-Length: " + body.Length.ToString() + @"
-Content-Type: text/html
-
-" + body;
-
-                    byte[] msg = System.Text.Encoding.ASCII.GetBytes(response);
-                    stream.Write(msg, 0, msg.Length);
-                    Console.WriteLine("Sent: {0}", response);
-                    client.Close();
-                }
+                Console.WriteLine("Webserver started. Press a key to quit.");
+                Console.ReadKey();
+                ws.Stop();
             }
-            catch (SocketException e)
+        }
+
+        static IEnumerable<string> GetServerRoutes()
+        {
+            const string htmlFolder = "root";
+            const string baseUrl = "http://localhost:8083/"; //todo: move to config
+
+            foreach (var file in Directory.GetFiles(htmlFolder))
             {
-                Console.WriteLine("SocketException: {0}", e);
-            }
-            finally
-            {                 
-                server.Stop();
+                yield return baseUrl + file.Replace(htmlFolder + "\\", "").Replace(".html", "/");
             }
 
-            Console.WriteLine("\nHit enter to continue...");
-            Console.Read();
+            yield return baseUrl;
         }
     }
 }
